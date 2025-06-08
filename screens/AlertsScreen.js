@@ -12,14 +12,14 @@ export default function AlertsScreen() {
 
   const fetchAlertas = async () => {
     try {
-      const response = await fetch('http://localhost:5149/api/alerts');
+      const response = await fetch('http://localhost:5149/api/alerts'); // 
       const data = await response.json();
       const formatados = data.map((item) => ({
         id: item.idAlert,
         nivel: item.type,
         descricao: item.description,
         regiao: item.title,
-        tempo: item.date,
+        tempo: new Date(item.date).toLocaleString(),
         cor: definirCor(item.type),
       }));
       setAlertas(formatados);
@@ -35,7 +35,6 @@ export default function AlertsScreen() {
       case 'emergência':
         return '#FF0000';
       case 'perigo':
-        return '#FFA500';
       case 'atenção':
         return '#FFA500';
       case 'informativo':
@@ -61,12 +60,14 @@ export default function AlertsScreen() {
       {alertas.map((alerta) => (
         <View key={alerta.id} style={[styles.alertCard, { borderLeftColor: alerta.cor }]}>
           <Ionicons name="alert-circle" size={30} color={alerta.cor} />
-          <View style={{ marginLeft: 10 }}>
-            <Text style={[styles.alertLevel, { color: alerta.cor }]}>
+          <View style={styles.alertContent}>
+            <Text style={[styles.alertLevel, { color: alerta.cor }]} numberOfLines={1}>
               {alerta.nivel} - {alerta.regiao}
             </Text>
             <Text style={styles.alertTime}>{alerta.tempo}</Text>
-            <Text style={styles.alertDesc}>{alerta.descricao}</Text>
+            <Text style={styles.alertDesc} numberOfLines={3}>
+              {alerta.descricao}
+            </Text>
           </View>
         </View>
       ))}
@@ -89,32 +90,40 @@ const styles = StyleSheet.create({
   },
   alertCard: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: '#F5F5F5',
     padding: 15,
     borderRadius: 12,
     borderLeftWidth: 6,
     marginBottom: 15,
+    gap: 10,
+  },
+  alertContent: {
+    flex: 1,
   },
   alertLevel: {
     fontSize: 16,
     fontWeight: 'bold',
+    maxWidth: '100%',
+    flexShrink: 1,
   },
   alertTime: {
     fontSize: 13,
     color: '#333333',
     marginTop: 4,
+    maxWidth: '100%',
+    flexShrink: 1,
   },
-
+  alertDesc: {
+    fontSize: 13,
+    color: '#333333',
+    marginTop: 4,
+    maxWidth: '100%',
+    flexShrink: 1,
+  },
   loadingContainer: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
-alertDesc: {
-  fontSize: 13,
-  color: '#333333',
-  marginTop: 4,
-},
-
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen';
 import AlertsScreen from '../screens/AlertsScreen';
-import MapScreen from '../screens/MapScreen';
+import AdminAlertsScreen from '../screens/AdminAlertsScreen';
 import SheltersScreen from '../screens/SheltersScreen';
 import ReportScreen from '../screens/ReportScreen';
 
@@ -23,7 +23,7 @@ export default function TabNavigator() {
               iconName = 'home';
             } else if (route.name === 'Alertas') {
               iconName = 'alert-circle';
-            } else if (route.name === 'Mapa') {
+            } else if (route.name === 'Admin') {
               iconName = 'map';
             } else if (route.name === 'Abrigos') {
               iconName = 'business';
@@ -40,7 +40,7 @@ export default function TabNavigator() {
       >
         <Tab.Screen name="Início" component={HomeScreen} />
         <Tab.Screen name="Alertas" component={AlertsScreen} />
-        <Tab.Screen name="Mapa" component={MapScreen} />
+        <Tab.Screen name="Admin" component={AdminAlertsScreen} />
         <Tab.Screen name="Abrigos" component={SheltersScreen} />
         <Tab.Screen name="Ocorrências" component={ReportScreen} />
       </Tab.Navigator>

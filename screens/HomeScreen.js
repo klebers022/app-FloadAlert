@@ -9,7 +9,7 @@ export default function HomeScreen() {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const apiUrl = 'http://localhost:5149/api'; // 🟢 IP da sua máquina na rede
+  const apiUrl = 'http://localhost:5149/api'; // Troque pelo seu IP ou domínio
 
   useEffect(() => {
     const fetchAlerts = async () => {
@@ -31,19 +31,23 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
         <Ionicons name="water" size={32} color="#005A9C" />
         <Text style={styles.title}>Flood Alert</Text>
       </View>
 
+      {/* Alerta Ativo */}
       <View style={styles.alertBox}>
         <MaterialIcons name="error-outline" size={32} color="#FFA500" />
-        <View style={{ marginLeft: 10 }}>
+        <View style={{ flex: 1 }}>
           {loading ? (
             <ActivityIndicator color="#FFA500" />
           ) : latestAlert ? (
             <>
-              <Text style={styles.alertTitle}>{latestAlert.type} - {latestAlert.status}</Text>
+              <Text style={styles.alertTitle}>
+                {latestAlert.type} - {latestAlert.status}
+              </Text>
               <Text style={styles.alertDesc}>{latestAlert.description}</Text>
             </>
           ) : (
@@ -52,10 +56,11 @@ export default function HomeScreen() {
         </View>
       </View>
 
+      {/* Menu */}
       <View style={styles.menuGrid}>
-        <TouchableOpacity style={styles.menuButton} onPress={() => navigation.navigate('Mapa')}>
+        <TouchableOpacity style={styles.menuButton} onPress={() => navigation.navigate('Admin')}>
           <Entypo name="map" size={24} color="#FFFFFF" />
-          <Text style={styles.menuText}>Mapa Interativo</Text>
+          <Text style={styles.menuText}>Defesa civil</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.menuButton} onPress={() => navigation.navigate('Abrigos')}>
@@ -74,6 +79,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
 
+      {/* Últimos Alertas */}
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Últimos Alertas</Text>
         {loading ? (
@@ -83,8 +89,12 @@ export default function HomeScreen() {
         ) : (
           alerts.slice(0, 3).map((alert) => (
             <View key={alert.idAlert} style={styles.statusRow}>
-              <Text style={styles.statusMedium}>● {alert.type}</Text>
-              <Text style={styles.statusText}>{new Date(alert.date).toLocaleDateString()}</Text>
+              <Text style={styles.statusMedium} numberOfLines={1} ellipsizeMode="tail">
+                ● {alert.type}
+              </Text>
+              <Text style={styles.statusText}>
+                {new Date(alert.date).toLocaleDateString()}
+              </Text>
             </View>
           ))
         )}
@@ -110,6 +120,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#005A9C',
     marginLeft: 8,
+    flexShrink: 1,
+    maxWidth: '90%',
   },
   alertBox: {
     backgroundColor: '#FFF4E5',
@@ -120,16 +132,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderLeftWidth: 6,
     borderLeftColor: '#FFA500',
+    gap: 10,
   },
   alertTitle: {
     color: '#FFA500',
     fontSize: 18,
     fontWeight: 'bold',
+    flexShrink: 1,
+    maxWidth: '100%',
   },
   alertDesc: {
     color: '#333333',
     fontSize: 14,
     marginTop: 4,
+    flexShrink: 1,
+    maxWidth: '100%',
   },
   menuGrid: {
     flexDirection: 'row',
@@ -177,13 +194,19 @@ const styles = StyleSheet.create({
   statusRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 10,
     marginBottom: 6,
+    flexWrap: 'wrap',
   },
   statusMedium: {
     color: '#FFA500',
     fontWeight: 'bold',
+    flexShrink: 1,
+    maxWidth: '50%',
   },
   statusText: {
     color: '#333333',
+    flexShrink: 1,
+    maxWidth: '50%',
   },
 });
